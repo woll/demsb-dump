@@ -16,6 +16,8 @@ Version 1.0 was developed using:
 
 	py27-pyusb-devel from MacPorts
 
+	libusb @1.0.18_0 from MacPorts
+
 The code was developed by recording the USB communications of the manufacturer-supplied Windows software and working out the neccessary commands, using some guesswork.
 
 I didn't attempt to work out the meaning of some of the data transfers (e.g. the 63-byte block that is sent from the unit), but it appears that this can be ignored.
