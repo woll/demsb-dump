@@ -2,7 +2,7 @@ demsb-dump is a utility to dump data from the Diamond DEMSB-D01 solar panel ener
 
 The DEMSB-D01 is a solar panel energy monitor, manufactured by Diamond Electric Manufacturing Co., www.diaelec.co.jp
 
-The monitor is supplied to household consumers in Japan, by solar panel suppliers like SANIX Co., sanix.jp
+The monitor is supplied to household consumers in Japan, by solar panel suppliers like SANIX Co., www.sanix.jp
 
 The supplied software only works on Windows, so I wrote demsb-dump to download the data on a Mac.
 
