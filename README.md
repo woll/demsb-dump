@@ -9,8 +9,11 @@ The supplied software only works on Windows, so I wrote demsb-dump to download t
 Presumably, with a few changes, the code will work under Linux and similar systems.
 
 Version 1.0 was developed using:
+
 	Mac OS X 10.7.5
+
 	python 2.7 from MacPorts
+
 	py27-pyusb-devel from MacPorts
 
 The code was developed by recording the USB communications of the manufacturer-supplied Windows software and working out the neccessary commands, using some guesswork.
