@@ -23,6 +23,7 @@ Usage
 demsb-dump [ -t ] [ -y ] [ -m ] [ -s ] [ -v ]
 
 Parameters:
+
 	-t
 		Print a graph showing today's readings. This will only show the readings up to the previous hour (because that data doesn't yet exist!)
 	
