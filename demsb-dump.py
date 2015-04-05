@@ -1,4 +1,5 @@
 #!/opt/local/bin/python
+
 #
 #
 # Utility to dump data from the Diamond DEMSB-D01 solar panel energy monitor unit
@@ -41,12 +42,14 @@ def cleanup( dev ):
 		dev.reset()
 	except usb.core.USBError as e:
 		print( e.args[1], file=sys.stderr)
+		debug_log( '\a\a\a\a\a\a\a\a\a\a\a\a\a' )
 		return
 
 	try:	
 		usb.util.dispose_resources(dev)
 	except usb.core.USBError as e:
 		print( e.args[1], file=sys.stderr)
+		debug_log( '\a\a\a\a\a\a\a\a\a\a\a\a\a' )
 		return
 #	time.sleep(60)
 
@@ -132,10 +135,10 @@ def print_months_chart( month, year, g, c, s, b ):
 		for m in range(23,-1,-1):
 			if (s[m] > v):
 				# Power exported
-				print( '$', end=" " )
+				print( '$ ', end=" " )
 			elif (g[m] > v):
 				# Power generated and used
-				print( '+', end=" " )
+				print( '+ ', end=" " )
 			else:
 				print( '  ', end=" " )
 		print()
@@ -157,10 +160,10 @@ def print_months_chart( month, year, g, c, s, b ):
 		for m in range(23,-1,-1):
 			if (b[m] > (v+2)):
 				# Power imported
-				print( 'X', end=" " )
+				print( 'X ', end=" " )
 			elif (c[m] > (v+2)):
 				# Generated power used
-				print( '0', end=" " )
+				print( '0 ', end=" " )
 			else:
 				print( '  ', end=" " )
 		print()
@@ -244,6 +247,7 @@ def main(argv):
 			dev.set_configuration()
 		except usb.core.USBError as e:
 			print( e.args[1], file=sys.stderr)
+			debug_log( '\a\a\a\a\a\a\a\a\a\a\a\a\a' )
 			continue;
 			
 		 
@@ -270,6 +274,7 @@ def main(argv):
 				break
 
 		if ( error ):
+			debug_log( '\a\a\a\a\a\a\a\a\a\a\a\a\a' )
 			continue
 
 
@@ -322,11 +327,13 @@ def main(argv):
 			# A read failed, so the data is incomplete, so reset device and loop again
 			debug_log( "Read of main data block failed" )
 			debug_log( "block %d is %d bytes long" % ( block, len( read_block ) ) )
+			debug_log( '\a\a\a\a\a\a\a\a\a\a\a\a\a' )
 			cleanup( dev )
 			continue
 			
 
 		# Interpret 1290 30-byte records containing the data
+		debug_log( "Interpret data..." )
 		b = 0
 		record = 0
 		num_months_read = 0
@@ -362,19 +369,22 @@ def main(argv):
 
 			# Records 1172 onwards are monthly data for the last 10 years
 			elif ( record >= 1172 ):
-				record_date = date( 2000 + year, month, this_day )
-				today = date.today()
-				two_years_ago = today.replace(year=today.year - 2)
+				try:
+					record_date = date( 2000 + year, month, 1 )
+					today = date.today()
+					two_years_ago = today.replace( year=today.year - 2, day=1 )
 
-				# If month is within last 24 months, then store data
-				if ( record_date > two_years_ago and record_date <= today ):
-					generated_d[n_month]=generate
-					consumed_d[n_month]=consume
-					sold_d[n_month]=sell
-					bought_d[n_month]=buy
-					month_d[n_month]=month
-					year_d[n_month]=year
-					n_month += 1
+					# If month is within last 24 months, then store data
+					if ( record_date > two_years_ago and record_date <= today ):
+						generated_d[n_month]=generate
+						consumed_d[n_month]=consume
+						sold_d[n_month]=sell
+						bought_d[n_month]=buy
+						month_d[n_month]=month
+						year_d[n_month]=year
+						n_month += 1
+				except ValueError:
+					print( "Date is not valid" )
 
 				# If stored 24 months of data, then print monthly chart
 				if n_month == 24:
