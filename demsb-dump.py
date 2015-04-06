@@ -42,14 +42,12 @@ def cleanup( dev ):
 		dev.reset()
 	except usb.core.USBError as e:
 		print( e.args[1], file=sys.stderr)
-		debug_log( '\a\a\a\a\a\a\a\a\a\a\a\a\a' )
 		return
 
 	try:	
 		usb.util.dispose_resources(dev)
 	except usb.core.USBError as e:
 		print( e.args[1], file=sys.stderr)
-		debug_log( '\a\a\a\a\a\a\a\a\a\a\a\a\a' )
 		return
 #	time.sleep(60)
 
@@ -210,14 +208,15 @@ def main(argv):
 
 	# Try N times to access device.
 	times_tried = 1
-	while 1:
+	while times_tried < 10:
 		debug_log( "Try %d" % ( times_tried ) )
 		if ( times_tried != 1 ):
-			time.sleep( 10 )
+			time.sleep( 1 )
 		times_tried += 1
 
 
 		i = datetime.datetime.now()
+		debug_log( i.strftime( '%H:%M:%S' ) )
 		this_day = int( i.strftime('%d') )
 		this_month = int( i.strftime('%m') )
 		this_year = int( i.strftime('%y') )
@@ -247,7 +246,6 @@ def main(argv):
 			dev.set_configuration()
 		except usb.core.USBError as e:
 			print( e.args[1], file=sys.stderr)
-			debug_log( '\a\a\a\a\a\a\a\a\a\a\a\a\a' )
 			continue;
 			
 		 
@@ -274,7 +272,6 @@ def main(argv):
 				break
 
 		if ( error ):
-			debug_log( '\a\a\a\a\a\a\a\a\a\a\a\a\a' )
 			continue
 
 
@@ -327,7 +324,6 @@ def main(argv):
 			# A read failed, so the data is incomplete, so reset device and loop again
 			debug_log( "Read of main data block failed" )
 			debug_log( "block %d is %d bytes long" % ( block, len( read_block ) ) )
-			debug_log( '\a\a\a\a\a\a\a\a\a\a\a\a\a' )
 			cleanup( dev )
 			continue
 			
